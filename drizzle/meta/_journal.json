@@ -1,0 +1,27 @@
+{
+  "version": "6",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1715543322122,
+      "tag": "0000_silent_titanium_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1715543562126,
+      "tag": "0001_equal_norrin_radd",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1715545767128,
+      "tag": "0002_absent_ravenous",
+      "breakpoints": true
+    }
+  ]
+}
