@@ -7,6 +7,7 @@ const authSchema = z.object({
     password: z.string(),
 })
 
+
 export type LoginPayload = z.infer<typeof authSchema>
 
 class AuthController {
@@ -19,11 +20,26 @@ class AuthController {
     signIn = async (request: FastifyRequest, reply: FastifyReply) => {
         try {
             const body = authSchema.parse(request.body)
-            const sub = await this.authService.signIn(body)
+            const { role, sub } = await this.authService.signIn(body)
 
-            const token = await reply.jwtSign(sub)
+            const token = await reply.jwtSign({
+                role,
+                sub
+            })
 
-            return reply.status(200).send({
+            const refreshToken = await reply.jwtSign({
+                role,
+                sub,
+            }, {
+                expiresIn: '7d',
+            })
+
+            reply.setCookie('refreshToken', refreshToken, {
+                httpOnly: true,
+                path: '/',
+                secure: true,
+                sameSite: true
+            }).status(200).send({
                 accessToken: token
             })
         } catch (error) {
@@ -33,9 +49,20 @@ class AuthController {
             })
         }
     }
+
+    me = async (request: FastifyRequest, reply: FastifyReply) => {
+        try {
+            const { sub } = request.user
+            const user = await this.authService.me(sub)
+            return reply.status(200).send(user)
+        } catch (error) {
+            return reply.status(400).send(error)
+        }
+    }
 }
 
 const authController = new AuthController()
+
 export {
     authController
 }

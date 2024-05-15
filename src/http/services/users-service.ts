@@ -1,8 +1,8 @@
 import { eq } from "drizzle-orm";
 import { db } from "../../db/connection";
 import { users } from "../../db/schema";
-import { Users } from "../controllers/users-controller";
 import { hash } from 'bcryptjs'
+import { Users } from "../dto/user-dto";
 
 export class UsersService {
 
@@ -20,6 +20,14 @@ export class UsersService {
             password: hashedPassword,
             role: dada.role
         })
+    }
+
+    async update(dada: Users, userId: number) {
+        await db.update(users).set(dada).where(eq(users.id, userId))
+    }
+
+    async delete(userId: number) {
+        await db.delete(users).where(eq(users.id, userId))
     }
 
     async findById(userId: number) {

@@ -1,6 +1,20 @@
 @baseUrl = http://localhost:3333
+@token = {{signin.response.body.accessToken}}
 
 ###
+
+# @name signin
+POST {{baseUrl}}/sign-in
+Content-Type: application/json
+Accept: application/json
+
+{
+    "email": "rafael@teste.com",
+    "password": "123456"
+}
+
+###
+
 # @name create-user
 POST {{baseUrl}}/users
 Content-Type: application/json
@@ -8,18 +22,30 @@ Accept: application/json
 
 {
     "name": "Teste",
-    "email": "teste@teste.com",
-    "password": "123456",
+    "email": "tatiane@teste.com",
+
     "role": "admin"
 }
 
+
 ###
-# @name sign-in
-POST {{baseUrl}}/sign-in
+
+# @name me
+GET {{baseUrl}}/me
 Content-Type: application/json
 Accept: application/json
+Authorization: Bearer {{token}}
+###
+
+# @name update-user
+PUT {{baseUrl}}/users
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer {{token}}
 
 {
-    "email": "teste@teste.com",
-    "password": "123456"
+    "name": "Rafael Tiburcio",
+    "email": "rafael@teste.com",
+    "password": "123456",
+    "role": "admin"
 }
